@@ -62,4 +62,11 @@ public class AddItemToBaskedTest extends BrowserSettings {
         //---Убедиться что итоговая цена соответствует
         assertEquals(getTotalPriceInBasked(), price, "Итоговая цена не соответствует, ожидалось - " + price + " получено - " + getTotalPriceInBasked());
     }
+
+    @Test (description = "Тест проверки паралельного запуска")
+    public void testOfParallel() throws InterruptedException {
+        //---Переход на страницу товара
+        getDriver().get(getProductUrl(productId));
+        Thread.sleep(5000);
+    }
 }

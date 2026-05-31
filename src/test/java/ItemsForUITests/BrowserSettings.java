@@ -9,29 +9,31 @@ import java.time.Duration;
 
 public class BrowserSettings {
 
-    private static WebDriver driver;
-    private static WebDriverWait wait;
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriverWait> wait = new ThreadLocal<>();
 
     @BeforeMethod
     public void openBrowser() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.manage().window().maximize();
+        driver.set(webDriver);
+        wait.set(new WebDriverWait(webDriver, Duration.ofSeconds(10)));
     }
 
     @AfterMethod
     public void closeBrowser() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
+            wait.remove();
         }
     }
 
     protected static WebDriver getDriver() {
-        return driver;
+        return driver.get();
     }
 
     protected static WebDriverWait getWait() {
-        return wait;
+        return wait.get();
     }
 }

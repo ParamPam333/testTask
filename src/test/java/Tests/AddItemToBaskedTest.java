@@ -3,6 +3,7 @@ package Tests;
 import ItemsForUITests.BrowserSettings;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static ItemsForUITests.BaskedItems.*;
@@ -13,10 +14,20 @@ import static org.testng.Assert.assertEquals;
 
 public class AddItemToBaskedTest extends BrowserSettings {
 
-    @Test (description = "Тест добавления товара в корзину")
-    public void testAddToBasked() {
+    @DataProvider(name = "productData")
+    public Object[][] productData() {
+        return new Object[][] {
+                {"264220770", "Щелкунчик по балету Чайковского. Книги для детей"},
+                {"574452275", "Книги для детей. Деревня Гусиные Лапки"},
+                {"284517699", "Динозавры детективы. Дело копчёной скумбрии. Книги для детей"},
+        };
+    }
+
+    @Test (description = "Тест добавления товара в корзину",
+            dataProvider = "productData")
+    public void testAddToBasked(String productId, String nameOfProduct) throws InterruptedException {
         //---Переход на страницу товара
-        getDriver().get(productUrl);
+        getDriver().get(getProductUrl(productId));
         getWait().until(ExpectedConditions.visibilityOf(productPage(productId)));
 
         //---Убедиться что отображается нужный товар

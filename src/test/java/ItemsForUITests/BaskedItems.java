@@ -34,12 +34,14 @@ public class BaskedItems {
         return Integer.parseInt(count.getAttribute("value"));
     }
 
-    public static String getProductPriceInBasked() {
+    public static String getProductPriceInBasked() throws InterruptedException {
+        Thread.sleep(500); //---анимация цены
         return getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class= 'list-item__price']//div[contains(@class, 'new')]"))
         ).getText();
     }
 
-    public static String getTotalPriceInBasked() {
+    public static String getTotalPriceInBasked() throws InterruptedException {
+        Thread.sleep(500);  //---анимация цены
         return getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(" //p[@class= 'b-top__total line']//span//span"))
         ).getText();
     }

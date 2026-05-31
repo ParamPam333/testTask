@@ -8,7 +8,11 @@ public class GeneralItems extends BrowserSettings{
     public static String productId = "264220770";
     public static String nameOfProduct = "Щелкунчик по балету Чайковского. Книги для детей";
 
+    public static String getProductUrl (String id) {
+        return "https://www.wildberries.by/catalog/"+ id +"/detail.aspx";
+    }
+
     public static void clickByElement (WebElement element) {
-        getWait().until(ExpectedConditions.visibilityOf(element)).click();
+        getWait().until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 }

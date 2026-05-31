@@ -4,8 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.util.Objects;
+
 import static ItemsForUITests.BrowserSettings.getDriver;
 import static ItemsForUITests.BrowserSettings.getWait;
+import static org.testng.Assert.assertEquals;
 
 public class BaskedItems {
 
@@ -35,14 +38,42 @@ public class BaskedItems {
     }
 
     public static String getProductPriceInBasked() throws InterruptedException {
-        Thread.sleep(500); //---анимация цены
-        return getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class= 'list-item__price']//div[contains(@class, 'new')]"))
+        String price = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class= 'list-item__price']//div[contains(@class, 'new')]"))
         ).getText();
+        String newPrice = "";
+
+        for (int i=0; i<10; i++) {
+            newPrice = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class= 'list-item__price']//div[contains(@class, 'new')]"))
+            ).getText();
+            if (!Objects.equals(price, newPrice)) {
+                price=newPrice;
+                Thread.sleep(50);
+            }
+            else {
+                break;
+            }
+        }
+        assertEquals(price, newPrice, "Анимация цены товара не прогрузилась за 500 мс");
+        return newPrice;
     }
 
     public static String getTotalPriceInBasked() throws InterruptedException {
-        Thread.sleep(500);  //---анимация цены
-        return getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(" //p[@class= 'b-top__total line']//span//span"))
+        String price = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(" //p[@class= 'b-top__total line']//span//span"))
         ).getText();
+        String newPrice = "";
+
+        for (int i=0; i<10; i++) {
+            newPrice = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(" //p[@class= 'b-top__total line']//span//span"))
+            ).getText();
+            if (!Objects.equals(price, newPrice)) {
+                price=newPrice;
+                Thread.sleep(50);
+            }
+            else {
+                break;
+            }
+        }
+        assertEquals(price, newPrice, "Анимация итоговой цены не прогрузилась за 500 мс");
+        return newPrice;
     }
 }
